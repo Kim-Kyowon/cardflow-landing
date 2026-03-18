@@ -471,60 +471,6 @@
       margin: 0 auto 36px;
     }
 
-    .feedback-form {
-      max-width: 520px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .feedback-form input,
-    .feedback-form textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: var(--radius-btn);
-      border: none;
-      font-size: 15px;
-      font-family: inherit;
-      outline: none;
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-      border: 1.5px solid rgba(255, 255, 255, 0.2);
-      transition: border-color .15s;
-    }
-
-    .feedback-form input::placeholder,
-    .feedback-form textarea::placeholder {
-      color: rgba(255, 255, 255, 0.45);
-    }
-
-    .feedback-form input:focus,
-    .feedback-form textarea:focus {
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .feedback-form textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .btn-white {
-      background: #fff;
-      color: var(--primary-dark);
-      font-size: 15px;
-      font-weight: 700;
-      padding: 14px;
-      border-radius: var(--radius-btn);
-      border: none;
-      cursor: pointer;
-      transition: opacity .15s;
-      font-family: inherit;
-    }
-
-    .btn-white:hover {
-      opacity: 0.9;
-    }
 
     /* ─── FOOTER ─── */
     footer {
@@ -829,14 +775,16 @@
     <h2 class="section-title" style="margin-bottom: 12px;">사용해보셨나요?<br />의견을 남겨주세요</h2>
     <p class="section-desc">버그 제보, 기능 요청, 불편한 점 무엇이든 환영합니다.<br />여러분의 피드백이 앱을 더 좋게 만듭니다.</p>
 
-    <form class="feedback-form"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSewZbYcivAo-8qVmqev8Fa5k0B-VW13T9Bd8On4xk7EUf0JHQ/viewform?usp=publish-editor"
-      method="POST">
-      <input type="text" name="name" placeholder="이름 (선택)" />
-      <input type="email" name="email" placeholder="이메일 (답변을 원하시면 입력해주세요)" />
-      <textarea name="message" placeholder="사용하면서 불편했던 점, 원하는 기능, 버그 등 자유롭게 적어주세요." required></textarea>
-      <button type="submit" class="btn-white">피드백 보내기 →</button>
-    </form>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSewZbYcivAo-8qVmqev8Fa5k0B-VW13T9Bd8On4xk7EUf0JHQ/viewform?embedded=true"
+      width="100%"
+      height="600"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      style="max-width:520px; border-radius:12px; display:block; margin:0 auto;">
+      로딩 중...
+    </iframe>
     <p style="margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.4);">
       또는 이메일로 직접 보내주세요: <a href="mailto:pbus11kw@gmail.com" style="color: #90CAF9;">pbus11kw@gmail.com</a>
     </p>
