@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Flow — 카드 실적 자동 관리 앱</title>
+  <meta name="description" content="카드사 푸시 알림을 자동으로 읽어 월별 카드 실적을 분석해주는 Android 앱" />
+
+  <!-- Pretendard -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #1976D2;
+      --primary-dark: #0D47A1;
+      --primary-light: #BBDEFB;
+      --bg: #F5F5F5;
+      --white: #ffffff;
+      --text: #212121;
+      --text-sub: #757575;
+      --text-hint: #BDBDBD;
+      --border: #EEEEEE;
+      --error: #D32F2F;
+      --success: #388E3C;
+      --radius-card: 16px;
+      --radius-btn: 12px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo span {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-outline {
+      padding: 8px 20px;
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-btn);
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .15s;
+    }
+
+    .btn-outline:hover {
+      background: #E3F2FD;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(160deg, #E3F2FD 0%, #F5F5F5 60%);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 em {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+    .hero p {
+      font-size: clamp(15px, 2.5vw, 18px);
+      color: var(--text-sub);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      text-decoration: none;
+      transition: background .15s, transform .1s;
+      box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: border-color .15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .hero-notice {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-hint);
+    }
+
+    .hero-notice a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .hero-notice a:hover {
+      text-decoration: underline;
+    }
+
+    /* ─── SCREENSHOTS ─── */
+    .screenshots {
+      padding: 24px 0 64px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #E3F2FD 0%, #F5F5F5 60%);
+    }
+
+    .screenshots-track {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 24px;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    .phone-frame img {
+      width: 100%;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      display: block;
+    }
+
+    .phone-caption {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    /* ─── SECTION COMMON ─── */
+    section {
+      padding: 80px 24px;
+    }
+
+    .section-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-sub);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    /* ─── FEATURES ─── */
+    .features {
+      background: var(--white);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      border: 1px solid var(--border);
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: #E3F2FD;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how {
+      background: var(--bg);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+      position: relative;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    /* ─── INSTALL GUIDE ─── */
+    .guide {
+      background: var(--white);
+    }
+
+    .guide-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .guide-step {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .guide-step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .guide-step-img {
+      flex-shrink: 0;
+      width: 180px;
+    }
+
+    .guide-step-img img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    .guide-step-body {
+      flex: 1;
+      padding-top: 8px;
+    }
+
+    .guide-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #E3F2FD;
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+
+    .guide-step-body h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .guide-step-body p {
+      font-size: 15px;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+
+    .guide-step-body .tip {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-top: 14px;
+      background: #FFF8E1;
+      border-left: 3px solid #FFA000;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #5D4037;
+      line-height: 1.55;
+    }
+
+    /* ─── FEEDBACK ─── */
+    .feedback {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: #fff;
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .feedback .section-label {
+      color: #90CAF9;
+    }
+
+    .feedback .section-title {
+      color: #fff;
+    }
+
+    .feedback .section-desc {
+      color: rgba(255, 255, 255, 0.75);
+      margin: 0 auto 36px;
+    }
+
+    .feedback-form {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feedback-form input,
+    .feedback-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius-btn);
+      border: none;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      transition: border-color .15s;
+    }
+
+    .feedback-form input::placeholder,
+    .feedback-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .feedback-form input:focus,
+    .feedback-form textarea:focus {
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .feedback-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .btn-white {
+      background: #fff;
+      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: var(--radius-btn);
+      border: none;
+      cursor: pointer;
+      transition: opacity .15s;
+      font-family: inherit;
+    }
+
+    .btn-white:hover {
+      opacity: 0.9;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #212121;
+      color: #9E9E9E;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    footer a {
+      color: #90CAF9;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 700px) {
+
+      .guide-step,
+      .guide-step:nth-child(even) {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .guide-step-img {
+        width: 150px;
+      }
+
+      .guide-step-body .tip {
+        text-align: left;
+      }
+
+      .screenshots-track {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 12px;
+      }
+
+      .screenshots-track::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .screenshots-track::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 99px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .phone-frame {
+        width: 160px;
+      }
+
+      .header-nav .btn-outline {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <img src="assets/logo-01.png" alt="Card Flow 로고" />
+        <span>Card Flow</span>
+      </a>
+      <nav class="header-nav">
+        <a href="#guide" class="btn-outline">설치 가이드</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-badge">🎉 베타 테스트 중 · 무료 배포</div>
+    <h1>카드 실적,<br /><em>이제 자동으로</em> 관리하세요</h1>
+    <p>카드사 푸시 알림을 자동으로 읽어<br />월별 소비 패턴과 카드 실적을 한눈에 정리해드립니다.</p>
+    <div class="hero-buttons">
+      <a href="https://drive.google.com/uc?export=download&id=1eDr7VA2hCRQ3wg_Dwj-aznd_7oKd1v02" class="btn-primary">
+        ⬇ APK 다운로드 (v0.2)
+      </a>
+      <a href="#guide" class="btn-secondary">
+        📖 설치 가이드 보기
+      </a>
+    </div>
+    <p class="hero-notice">
+      Android 전용 · APK 직접 설치 필요 &nbsp;·&nbsp;
+      <a href="#guide">설치 방법 안내</a>
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════ SCREENSHOTS ═══════════════════════════════ -->
+  <div class="screenshots">
+    <div class="screenshots-track">
+      <div class="phone-frame">
+        <img src="screenshot/screenshot-1.jpg" alt="실적 현황 화면" />
+        <p class="phone-caption">카드별 실적 현황</p>
+      </div>
+      <div class="phone-frame">
+        <img src="screenshot/screenshot-2.jpg" alt="거래내역 화면" />
+        <p class="phone-caption">월별 거래내역</p>
+      </div>
+      <div class="phone-frame">
+        <img src="screenshot/screenshot-3.jpg" alt="카드 관리 화면" />
+        <p class="phone-caption">카드 관리</p>
+      </div>
+      <div class="phone-frame">
+        <img src="screenshot/screenshot-4.jpg" alt="설정 화면" />
+        <p class="phone-caption">해외결제 환율 설정</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ FEATURES ═══════════════════════════════ -->
+  <section class="features">
+    <div class="section-inner">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">필요한 기능만,<br />군더더기 없이</h2>
+      <p class="section-desc">복잡한 가계부 앱 대신, 카드 실적 관리에 집중한 심플한 앱입니다.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>자동 푸시 알림 파싱</h3>
+          <p>카드사 앱 푸시 알림을 수신하는 즉시 자동으로 카드사·금액·가맹점을 인식합니다. 별도 입력 없이 자동 등록됩니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>카드별 실적 진행률</h3>
+          <p>카드별 당월 목표 금액 대비 달성률을 프로그레스 바로 한눈에 확인하세요. 어느 카드를 더 써야 할지 바로 보입니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗂</div>
+          <h3>카테고리 자동 분류</h3>
+          <p>식비·교통·쇼핑·의료·구독·공과금 등 7개 카테고리로 자동 분류합니다. 실적 제외 카테고리도 카드별로 설정 가능합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3>월별 내역 조회</h3>
+          <p>월·카드·카테고리별 필터로 원하는 내역만 빠르게 조회하세요. 일별 그룹핑으로 소비 흐름을 파악할 수 있습니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✏️</div>
+          <h3>수기 내역 등록</h3>
+          <p>현금 결제나 알림을 놓친 내역도 직접 등록할 수 있습니다. 카테고리와 날짜를 자유롭게 지정하세요.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>완전 로컬 저장</h3>
+          <p>모든 데이터는 내 폰에만 저장됩니다. 서버 전송·회원가입 없이 사용하세요. 인터넷 연결도 필요 없습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ HOW IT WORKS ═══════════════════════════════ -->
+  <section class="how">
+    <div class="section-inner">
+      <p class="section-label">How it works</p>
+      <h2 class="section-title">사용법, 딱 3단계</h2>
+      <p class="section-desc">복잡한 설정 없이 설치하고 권한만 허용하면 모든 게 자동입니다.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>APK 설치</h3>
+          <p>아래 APK 파일을 다운로드해 설치합니다. 설치 가이드를 참고하면 5분이면 완료됩니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>알림 접근 권한 허용</h3>
+          <p>앱 첫 실행 시 알림 접근 권한을 허용합니다. 카드사 푸시를 읽는 핵심 권한입니다.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>카드 결제 후 자동 등록</h3>
+          <p>카드를 사용하면 자동으로 내역이 등록됩니다. 앱을 열어 실적을 확인하세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ INSTALL GUIDE ═══════════════════════════════ -->
+  <section class="guide" id="guide">
+    <div class="section-inner">
+      <p class="section-label">Install Guide</p>
+      <h2 class="section-title">설치 가이드</h2>
+      <p class="section-desc">플레이스토어 미등록 APK이므로 아래 단계를 따라 설치해주세요.</p>
+
+      <div class="guide-steps">
+
+        <!-- Step 1 -->
+        <div class="guide-step">
+          <div class="guide-step-img">
+            <img src="screenshot/installguide-4.jpg" alt="앱 첫 실행 화면" />
+          </div>
+          <div class="guide-step-body">
+            <span class="guide-step-badge">STEP 1</span>
+            <h3>APK 파일 다운로드 후 설치</h3>
+            <p>상단 <strong>APK 다운로드</strong> 버튼을 눌러 파일을 받고, 파일 관리자에서 실행하세요.<br />
+              크롬 브라우저의 경우 다운로드 알림에서 바로 설치할 수 있습니다.</p>
+            <div class="tip">
+              💡 설치 전 <strong>설정 → 보안 → 출처를 알 수 없는 앱</strong>에서 브라우저(또는 파일 관리자)의 설치 허용을 켜주세요.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="guide-step">
+          <div class="guide-step-img">
+            <img src="screenshot/installguide-1.jpg" alt="안전하지 않은 앱 경고" />
+          </div>
+          <div class="guide-step-body">
+            <span class="guide-step-badge">STEP 2</span>
+            <h3>"안전하지 않은 앱" 경고 무시하기</h3>
+            <p>플레이스토어를 거치지 않은 APK이기 때문에 Android가 경고를 표시합니다.<br />
+              <strong>"무시하고 설치"</strong>를 눌러 설치를 진행해주세요.
+            </p>
+            <div class="tip">
+              🔒 Cardflow는 모든 데이터를 기기 내부에만 저장합니다. 서버로 전송되는 정보는 없습니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="guide-step">
+          <div class="guide-step-img">
+            <img src="screenshot/installguide-2.jpg" alt="Play 프로텍트 비활성화" />
+          </div>
+          <div class="guide-step-body">
+            <span class="guide-step-badge">STEP 3</span>
+            <h3>Play 프로텍트 검사 끄기 (선택)</h3>
+            <p>Play 프로텍트가 앱을 유해 앱으로 경고하는 경우 <strong>Play 스토어 → 메뉴 → Play 프로텍트 → 설정</strong>에서
+              <strong>"Play 프로텍트로 앱 검사"</strong>를 일시적으로 꺼주세요.
+            </p>
+            <div class="tip">
+              💡 정식 마켓 출시 후에는 다시 켜두시는 것을 권장합니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="guide-step">
+          <div class="guide-step-img">
+            <img src="screenshot/installguide-3.jpg" alt="배터리 최적화 및 알림 허용" />
+          </div>
+          <div class="guide-step-body">
+            <span class="guide-step-badge">STEP 4</span>
+            <h3>배터리 최적화 중지 · 알림 허용</h3>
+            <p>앱 설치 후 첫 실행 시 두 가지 팝업이 표시됩니다.</p>
+            <ul style="margin: 10px 0 0 16px; font-size: 15px; color: var(--text-sub); line-height: 1.9;">
+              <li><strong>배터리 사용량 최적화 중지</strong> → <strong>허용</strong> 선택<br />
+                <span style="font-size:13px;">(백그라운드에서 알림을 안정적으로 수신하기 위해 필요합니다)</span>
+              </li>
+              <li style="margin-top: 6px;"><strong>알림 허용</strong> → <strong>허용</strong> 선택</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="guide-step">
+          <div class="guide-step-img">
+            <img src="screenshot/installguide-5.jpg" alt="알림 접근 허용" />
+          </div>
+          <div class="guide-step-body">
+            <span class="guide-step-badge">STEP 5</span>
+            <h3>알림 접근 권한 허용</h3>
+            <p>앱 화면에서 <strong>"알림 접근 권한 허용하기"</strong> 버튼을 누르면 시스템 설정 화면으로 이동합니다.<br />
+              목록에서 <strong>Cardflow</strong>를 찾아 토글을 켜고 <strong>"허용"</strong>을 눌러주세요.</p>
+            <div class="tip">
+              ✅ 허용 후 앱으로 돌아오면 자동으로 메인 화면이 시작됩니다. 이제 카드를 사용하면 자동으로 내역이 등록됩니다!
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align: center; margin-top: 56px;">
+        <a href="https://drive.google.com/uc?export=download&id=1eDr7VA2hCRQ3wg_Dwj-aznd_7oKd1v02" class="btn-primary" style="font-size: 16px; padding: 16px 36px;">
+          ⬇ APK 다운로드 (v0.2)
+        </a>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--text-hint);">Android 8.0 이상 · 용량 약 30MB</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ FEEDBACK ═══════════════════════════════ -->
+  <section class="feedback" id="feedback">
+    <p class="section-label">Beta Feedback</p>
+    <h2 class="section-title" style="margin-bottom: 12px;">사용해보셨나요?<br />의견을 남겨주세요</h2>
+    <p class="section-desc">버그 제보, 기능 요청, 불편한 점 무엇이든 환영합니다.<br />여러분의 피드백이 앱을 더 좋게 만듭니다.</p>
+
+    <form class="feedback-form"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSewZbYcivAo-8qVmqev8Fa5k0B-VW13T9Bd8On4xk7EUf0JHQ/viewform?usp=publish-editor"
+      method="POST">
+      <input type="text" name="name" placeholder="이름 (선택)" />
+      <input type="email" name="email" placeholder="이메일 (답변을 원하시면 입력해주세요)" />
+      <textarea name="message" placeholder="사용하면서 불편했던 점, 원하는 기능, 버그 등 자유롭게 적어주세요." required></textarea>
+      <button type="submit" class="btn-white">피드백 보내기 →</button>
+    </form>
+    <p style="margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.4);">
+      또는 이메일로 직접 보내주세요: <a href="mailto:pbus11kw@gmail.com" style="color: #90CAF9;">pbus11kw@gmail.com</a>
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer>
+    <p>
+      <strong style="color: #fff;">Card Flow</strong> &nbsp;·&nbsp; 베타 v0.2
+    </p>
+    <p style="margin-top: 6px;">
+      모든 데이터는 기기 내부에만 저장됩니다 &nbsp;·&nbsp; 서버 전송 없음 &nbsp;·&nbsp; 광고 없음
+    </p>
+    <p style="margin-top: 8px;">
+      문의: <a href="mailto:feedback@cardflow.app">feedback@cardflow.app</a>
+    </p>
+  </footer>
+
+</body>
+
+</html>
