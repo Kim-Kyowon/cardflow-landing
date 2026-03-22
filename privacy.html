@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개인정보처리방침 — Cardflow</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F5F5F5;
+      color: #212121;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #EEEEEE;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo span {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0D47A1;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px 80px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .updated {
+      font-size: 13px;
+      color: #9E9E9E;
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E3F2FD;
+      color: #1976D2;
+    }
+
+    p {
+      font-size: 15px;
+      color: #424242;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    li {
+      font-size: 15px;
+      color: #424242;
+      margin-bottom: 6px;
+    }
+
+    .highlight {
+      background: #E3F2FD;
+      border-left: 4px solid #1976D2;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 15px;
+      color: #0D47A1;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #9E9E9E;
+      padding: 24px;
+      border-top: 1px solid #EEEEEE;
+    }
+
+    footer a {
+      color: #1976D2;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="assets/logo-01.png" alt="Cardflow 로고" />
+      <span>Cardflow</span>
+    </a>
+  </header>
+
+  <div class="container">
+    <h1>개인정보처리방침</h1>
+    <p class="updated">시행일: 2026년 4월 1일 &nbsp;·&nbsp; 최종 수정일: 2026년 4월 1일</p>
+
+    <div class="highlight">
+      Cardflow는 수집한 모든 데이터를 오직 사용자의 기기 내부에만 저장합니다.<br />
+      외부 서버로 전송되거나 제3자와 공유되는 정보는 없습니다.
+    </div>
+
+    <h2>1. 수집하는 정보</h2>
+    <p>Cardflow는 다음 정보를 수집합니다.</p>
+    <ul>
+      <li><strong>알림 내용</strong>: 카드사 앱에서 발송되는 결제 푸시 알림의 제목 및 본문</li>
+      <li><strong>거래 정보</strong>: 알림에서 파싱된 카드사명, 카드번호 끝 4자리, 가맹점명, 결제금액, 결제일시</li>
+    </ul>
+    <p>위 정보 외에 이름, 연락처, 위치, 계정 정보 등 어떠한 개인 식별 정보도 수집하지 않습니다.</p>
+
+    <h2>2. 정보의 이용 목적</h2>
+    <p>수집된 정보는 다음 목적으로만 사용됩니다.</p>
+    <ul>
+      <li>월별 카드 이용 실적 집계 및 표시</li>
+      <li>카테고리별 소비 패턴 분석</li>
+      <li>카드별 목표 금액 달성률 계산</li>
+    </ul>
+
+    <h2>3. 정보의 저장 및 보관</h2>
+    <p>모든 데이터는 <strong>사용자의 기기 내부 저장소(SQLite 데이터베이스)</strong>에만 저장됩니다.</p>
+    <ul>
+      <li>외부 서버, 클라우드, 제3자 서비스로 전송되지 않습니다.</li>
+      <li>앱을 삭제하면 모든 데이터가 함께 삭제됩니다.</li>
+      <li>데이터 보관 기간은 사용자가 직접 관리합니다.</li>
+    </ul>
+
+    <h2>4. 알림 접근 권한</h2>
+    <p>Cardflow는 <strong>알림 접근 권한(Notification Listener)</strong>을 사용합니다.</p>
+    <ul>
+      <li>이 권한은 카드사 앱의 결제 알림을 자동으로 읽기 위해 사용됩니다.</li>
+      <li>카드사 알림 외 다른 앱의 알림 내용은 저장하거나 처리하지 않습니다.</li>
+      <li>권한은 언제든지 <strong>설정 → 알림 접근 권한</strong>에서 해제할 수 있습니다.</li>
+    </ul>
+
+    <h2>5. 제3자 제공</h2>
+    <p>Cardflow는 수집한 정보를 어떠한 제3자에게도 판매, 임대, 공유하지 않습니다.</p>
+
+    <h2>6. 아동 개인정보 보호</h2>
+    <p>Cardflow는 만 14세 미만 아동을 대상으로 하지 않으며, 아동의 개인정보를 의도적으로 수집하지 않습니다.</p>
+
+    <h2>7. 방침 변경</h2>
+    <p>개인정보처리방침이 변경되는 경우, 앱 업데이트 또는 본 페이지를 통해 고지합니다. 변경 후 앱을 계속 사용하면 변경된 방침에 동의한 것으로 간주합니다.</p>
+
+    <h2>8. 문의</h2>
+    <p>개인정보 처리에 관한 문의 사항은 아래로 연락해주세요.</p>
+    <ul>
+      <li>개발자: Dain Studio</li>
+      <li>이메일: <a href="mailto:pbus11kw@gmail.com" style="color:#1976D2;">pbus11kw@gmail.com</a></li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Dain Studio &nbsp;·&nbsp; <a href="index.html">Cardflow 홈으로</a></p>
+  </footer>
+</body>
+
+</html>
