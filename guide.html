@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>설치 가이드 — Card Flow</title>
+  <meta name="description" content="Card Flow 앱 설치 및 권한 설정 가이드" />
+
+  <!-- Pretendard -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #1976D2;
+      --primary-dark: #0D47A1;
+      --primary-light: #E3F2FD;
+      --bg: #F8F9FA;
+      --white: #ffffff;
+      --text: #212121;
+      --text-sub: #666666;
+      --border: #EEEEEE;
+      --radius-card: 20px;
+      --radius-btn: 12px;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo span {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .back-link {
+      font-size: 14px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 48px 20px 32px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--text-sub);
+    }
+
+    /* ─── GUIDE STEPS ─── */
+    .guide-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .step-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .step-header {
+      margin-bottom: 24px;
+    }
+
+    .step-number {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+
+    .step-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      color: var(--text-sub);
+    }
+
+    .step-img-wrapper {
+      background: #f1f3f5;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .step-img-wrapper img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .tip-box {
+      margin-top: 20px;
+      background: #FFF8E1;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 14px;
+      color: #5D4037;
+      display: flex;
+      gap: 10px;
+    }
+
+    .tip-box strong {
+      color: #E65100;
+    }
+
+    /* ─── DOWNLOAD SECTION ─── */
+    .download-section {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--white);
+      margin-top: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: var(--radius-btn);
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(25, 118, 210, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(25, 118, 210, 0.4);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 40px 20px 24px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .step-card {
+        padding: 24px;
+      }
+
+      .step-title {
+        font-size: 20px;
+      }
+
+      .step-img-wrapper {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/logo-01.png" alt="Card Flow 로고" />
+        <span>Card Flow</span>
+      </a>
+      <a href="index.html" class="back-link">메인으로 돌아가기</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Card Flow 설치 가이드</h1>
+    <p>아래 순서에 따라 앱을 설치하고 설정해 주세요.</p>
+  </section>
+
+  <!-- GUIDE STEPS -->
+  <main class="guide-container">
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-number">STEP 1</span>
+        <h2 class="step-title">앱 설치 시작</h2>
+        <p class="step-desc">설치 링크를 열고 <strong>'설치'</strong> 버튼을 클릭합니다.</p>
+      </div>
+      <div class="step-img-wrapper">
+        <img src="screenshot/guide_01.png" alt="설치 화면" />
+      </div>
+      <div class="tip-box">
+        <span>💡</span>
+        <div>
+          <strong>알림:</strong> 개발자 테스트용 앱이므로 안전하지 않거나 작동이 불안정할 수 있다는 경고가 뜰 수 있으나, 안심하고 진행하셔도 됩니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-number">STEP 2</span>
+        <h2 class="step-title">시스템 권한 허용</h2>
+        <p class="step-desc">앱이 백그라운드에서 카드 알림을 원활하게 읽어올 수 있도록 두 가지 권한을 <strong>'허용'</strong>해야 합니다.</p>
+      </div>
+      <div class="step-img-wrapper">
+        <img src="screenshot/guide_02.png" alt="권한 허용 화면" />
+      </div>
+      <div class="tip-box">
+        <span>✅</span>
+        <div>
+          <strong>배터리 최적화 중지:</strong> 앱이 꺼지지 않고 알림을 즉시 처리하는 데 필요합니다.<br>
+          <strong>알림 허용:</strong> 카드 결제 내역을 앱에서 읽어오기 위한 필수 단계입니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-number">STEP 3</span>
+        <h2 class="step-title">알림 접근 권한 활성화</h2>
+        <p class="step-desc">가장 중요한 단계입니다! <strong>'알림 접근 권한 허용하기'</strong> 버튼을 누르고 목록에서 <strong>Cardflow</strong>를 찾아 활성화해 주세요.</p>
+      </div>
+      <div class="step-img-wrapper">
+        <img src="screenshot/guide_03.png" alt="알림 접근 허용 설정" />
+      </div>
+      <div class="tip-box">
+        <span>🔒</span>
+        <div>
+          <strong>보안 안내:</strong> Cardflow는 카드 알림의 텍스트만 읽어 분석하며, 모든 데이터는 기기에만 저장됩니다. 어떠한 개인 정보도 외부로 전송하지 않습니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <span class="step-number">STEP 4</span>
+        <h2 class="step-title">설치 완료 및 사용 시작</h2>
+        <p class="step-desc">모든 설정이 완료되었습니다. 이제 평소처럼 카드를 사용하시면 Cardflow가 자동으로 내역을 기록합니다.</p>
+      </div>
+      <div class="step-img-wrapper">
+        <img src="screenshot/guide_04.png" alt="앱 초기 화면" />
+      </div>
+      <div class="tip-box">
+        <span>✨</span>
+        <div>
+          <strong>팁:</strong> 처음에는 등록된 카드가 없지만, 결제 알림이 오면 자동으로 실적이 쌓이기 시작합니다. '카드 관리' 탭에서 목표 실적을 설정해 보세요.
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- INFO SECTION -->
+  <section class="info-section" style="max-width: 800px; margin: 40px auto; padding: 60px 20px; text-align: center; background: var(--white); border-radius: var(--radius-card); border: 1px solid var(--border);">
+    <p style="font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.8; margin-bottom: 32px; white-space: pre-wrap;">설치가 완료되어면 이제 앱을 사용해보실수 있습니다.
+카드사 푸시알림, 또는 SMS/카톡 알림을 허용해주시면
+자동으로 알림 메시지를 읽어와서 카드정보와 카드실적을 보여줍니다.</p>
+    
+    <div style="font-size: 15px; color: var(--text-sub); line-height: 1.8; padding-top: 32px; border-top: 1px solid var(--border);">
+      사용중 문의사항이 있으시면 아래 문의처로 메일 문의 바랍니다.<br>
+      <span style="font-weight: 700; color: var(--primary);">문의처 : pbus11kw@gmail..com</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Card Flow. All rights reserved.</p>
+  </footer>
+
+</body>
+
+</html>
